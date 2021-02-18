@@ -1,0 +1,23 @@
+{
+  "name": "video-trim-node",
+  "version": "1.0.0",
+  "description": "snapshot and trim apis",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/santo-cold/ReactVideoTrim.git"
+  },
+  "author": "Santo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/santo-cold/ReactVideoTrim/issues"
+  },
+  "homepage": "https://github.com/santo-cold/ReactVideoTrim#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "ffmpeg": "^0.0.4"
+  }
+}
