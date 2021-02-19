@@ -93,7 +93,7 @@ function App() {
 	return (
 		<div className="App">
 			<header className="App-header">
-				<video controls style={{ width: '90%', height: '300px' }}>
+				<video controls style={{ width: '90%', height: '450px' }}>
 					<source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" />
 				</video>
 				<div style={{ width: '90%', marginTop: 15 }}>
@@ -104,7 +104,7 @@ function App() {
 				<div
 					id="parent"
 					style={{
-						height: '94px',
+						height: '80px',
 						background: '#b4b4b4',
 						width: '90%',
 						marginTop: 10,
@@ -114,19 +114,19 @@ function App() {
 				>
 					<div
 						style={{
-							top: -3,
+							top: -10,
 							left: distance.left,
 							border: '8px solid  #6a5ca6',
 							display: 'inline-block',
 							position: 'absolute',
 							borderLeft: 'none',
 							borderRight: 'none',
-							background: '#ffffff8c',
+							background: '#ffffff',
 							height: 84,
 							width: distance.right - distance.left
 						}}
 					></div>
-					<div style={{ marginTop: -3 }}>
+					<div style={{ marginTop: -10 }}>
 						{sliderDivOffSets && [
 							<Draggable
 								bounds={{
@@ -212,7 +212,6 @@ function App() {
 					</div>
 				</div>
 				<div style={{ marginTop: 60 }}>
-					<div style={{ marginBottom: 20 }}> Trim from</div>
 					<div className="d-ib mr-10 dm">
 						<TimeField value={getStartTime(startTime)} className="dm" />
 					</div>
