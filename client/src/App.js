@@ -93,7 +93,7 @@ function App() {
 	return (
 		<div className="App">
 			<header className="App-header">
-				<video controls style={{ width: '90%', height: '300px' }}>
+				<video controls style={{ width: '90%', height: '200px' }}>
 					<source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" />
 				</video>
 				<div style={{ width: '90%', marginTop: 15 }}>
@@ -212,7 +212,6 @@ function App() {
 					</div>
 				</div>
 				<div style={{ marginTop: 60 }}>
-					<div style={{ marginBottom: 20 }}> Trim from</div>
 					<div className="d-ib mr-10 dm">
 						<TimeField value={getStartTime(startTime)} className="dm" />
 					</div>
