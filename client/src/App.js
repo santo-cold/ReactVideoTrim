@@ -39,6 +39,7 @@ function App() {
 				normalize = (normalize * 100) / width;
 				let endTime = Math.round((normalize / 100) * duration);
 				setEndTime(endTime);
+				video.currentTime = endTime;
 				// console.log('x:' + data.x, 'normazlize:' + normalize, 'max:' + max);
 			}
 		}
@@ -55,7 +56,7 @@ function App() {
 	const onTimeUpdate = (e) => {
 		var video = document.querySelector('video');
 		// currentBar(video.currentTime, video.duration);
-		if (endTime && video.currentTime >= endTime) {
+		if (endTime && video.currentTime == endTime) {
 			video.pause();
 		} else {
 			window.requestAnimationFrame(onTimeUpdate);
@@ -90,10 +91,17 @@ function App() {
 		return timeCalculated.toString();
 	}
 
+	function onPlay(e) {
+		var video = document.querySelector('video');
+		if (video.currentTime >= endTime) {
+			video.currentTime = startTime;
+		}
+	}
+
 	return (
 		<div className="App">
 			<header className="App-header">
-				<video controls style={{ width: '90%', height: '200px' }}>
+				<video controls style={{ width: '90%', height: '250px' }} onPlay={(e) => onPlay(e)}>
 					<source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" />
 				</video>
 				<div style={{ width: '90%', marginTop: 15 }}>
@@ -104,7 +112,7 @@ function App() {
 				<div
 					id="parent"
 					style={{
-						height: '94px',
+						height: '80px',
 						background: '#b4b4b4',
 						width: '90%',
 						marginTop: 10,
@@ -114,19 +122,19 @@ function App() {
 				>
 					<div
 						style={{
-							top: -3,
+							top: -10,
 							left: distance.left,
 							border: '8px solid  #6a5ca6',
 							display: 'inline-block',
 							position: 'absolute',
 							borderLeft: 'none',
 							borderRight: 'none',
-							background: '#ffffff8c',
+							background: '#ffffff',
 							height: 84,
 							width: distance.right - distance.left
 						}}
 					></div>
-					<div style={{ marginTop: -3 }}>
+					<div style={{ marginTop: -10 }}>
 						{sliderDivOffSets && [
 							<Draggable
 								bounds={{
