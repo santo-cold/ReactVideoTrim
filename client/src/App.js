@@ -18,11 +18,11 @@ function App() {
 		var video = document.querySelector('video');
 		video.pause();
 		if (pos == 'left') {
-			let max = -(sliderDivOffSets.right - sliderDivOffSets.left - sliderDivOffSets.left + 20) / 2;
+			let max = -(sliderDivOffSets.right - sliderDivOffSets.left) / 2;
 			if (max < data.x && data.x + 20 < rightMax) {
 				setDistance({ left: e.clientX - sliderDivOffSets.left, right: distance.right });
-				let max = (sliderDivOffSets.right - sliderDivOffSets.left - sliderDivOffSets.left + 20) / 2;
-				let width = max * 2 - 20;
+				let max = (sliderDivOffSets.right - sliderDivOffSets.left) / 2;
+				let width = max * 2;
 				let normalize = max + data.x;
 				normalize = (normalize * 100) / width;
 				video.currentTime = Math.round((normalize / 100) * duration);
@@ -30,39 +30,30 @@ function App() {
 				// console.log('x:' + data.x, 'normazlize:' + normalize, 'max:' + max);
 			}
 		} else {
-			let max = (sliderDivOffSets.right - sliderDivOffSets.left - sliderDivOffSets.left + 20) / 2;
+			let max = (sliderDivOffSets.right - sliderDivOffSets.left) / 2;
 			if (max > data.x && data.x - 20 > leftMax) {
 				setDistance({ right: e.clientX - sliderDivOffSets.left, left: distance.left });
-				let max = (sliderDivOffSets.right - sliderDivOffSets.left - sliderDivOffSets.left + 20) / 2;
-				let width = max * 2 - 20;
+				let max = (sliderDivOffSets.right - sliderDivOffSets.left) / 2;
+				let width = max * 2;
 				let normalize = max + data.x;
 				normalize = (normalize * 100) / width;
 				let endTime = Math.round((normalize / 100) * duration);
 				setEndTime(endTime);
+				window.endTime = endTime;
 				video.currentTime = endTime;
 				// console.log('x:' + data.x, 'normazlize:' + normalize, 'max:' + max);
 			}
 		}
 	}
 
-	// function currentBar(time, duration) {
-	// 	let max = (sliderDivOffSets.right - sliderDivOffSets.left - sliderDivOffSets.left + 20) / 2;
-	// 	let width = max * 2 - 20;
-	// 	let normalize = (time * 100) / duration;
-	// 	normalize = (normalize * width) / 100;
-	// 	setCurrentTime(normalize);
-	// }
-
 	const onTimeUpdate = (e) => {
 		var video = document.querySelector('video');
-		// currentBar(video.currentTime, video.duration);
-		if (endTime && video.currentTime == endTime) {
-			video.pause();
-		} else {
-			window.requestAnimationFrame(onTimeUpdate);
+		if (video && !video.paused) {
+			if (!video.paused && window.endTime && video.currentTime >= window.endTime) {
+				video.pause();
+			}
 		}
 	};
-	window.requestAnimationFrame(onTimeUpdate);
 
 	useEffect(() => {
 		var video = document.querySelector('video');
@@ -94,35 +85,55 @@ function App() {
 	function onPlay(e) {
 		var video = document.querySelector('video');
 		if (video.currentTime >= endTime) {
+			video.pause();
 			video.currentTime = startTime;
+			video.play();
+		}
+	}
+	function getMarkers() {
+		if (sliderDivOffSets) {
+			let width = sliderDivOffSets.right - sliderDivOffSets.left;
+			let units = Array.apply(null, Array(Math.round((width - 15) / 15)));
+			return (
+				<div>
+					{units.map((value, index) => (
+						<div className={index % 5 ? 'short-marker' : 'long-marker'}> </div>
+					))}
+				</div>
+			);
 		}
 	}
 
 	return (
 		<div className="App">
-			<header className="App-header">
-				<video controls style={{ width: '90%', height: '250px' }} onPlay={(e) => onPlay(e)}>
+			<header className="App-header" style={{ maxWidth: 1600 }}>
+				<video
+					controls
+					style={{ width: '90%', height: '450px' }}
+					onPlay={(e) => onPlay(e)}
+					onTimeUpdate={() => onTimeUpdate()}
+				>
 					<source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" />
 				</video>
-				<div style={{ width: '90%', marginTop: 15 }}>
-					<div className="handle">
+				<div style={{ width: '90%', height: 35 }}>
+					{/* <div className="handle">
 						<img width="40px" height="40px" src={Trim} style={{ opacity: 0.7 }} />
-					</div>
+					</div> */}
 				</div>
 				<div
 					id="parent"
 					style={{
-						height: '80px',
-						background: '#b4b4b4',
+						height: '74px',
+						background: '#545456',
 						width: '90%',
-						marginTop: 10,
+						marginTop: 1,
 						borderRadius: 3,
 						position: 'relative'
 					}}
 				>
 					<div
 						style={{
-							top: -10,
+							top: -13,
 							left: distance.left,
 							border: '8px solid  #6a5ca6',
 							display: 'inline-block',
@@ -131,16 +142,15 @@ function App() {
 							borderRight: 'none',
 							background: '#ffffff',
 							height: 84,
-							width: distance.right - distance.left
+							width: distance.right - distance.left,
+							borderRadius: 1
 						}}
 					></div>
-					<div style={{ marginTop: -10 }}>
+					<div style={{ marginTop: -13 }}>
 						{sliderDivOffSets && [
 							<Draggable
 								bounds={{
-									left:
-										-(sliderDivOffSets.right - sliderDivOffSets.left - sliderDivOffSets.left + 20) /
-										2,
+									left: -(sliderDivOffSets.right - sliderDivOffSets.left) / 2,
 									right: rightMax - 20
 								}}
 								axis="x"
@@ -148,7 +158,6 @@ function App() {
 								defaultPosition={{ x: -20, y: 0 }}
 								grid={[1, 1]}
 								scale={1}
-								// onStart={this.handleStart}
 								onDrag={(e, dragData) => handleDrag(e, dragData, 'left')}
 								onStop={(e, data) => setLeftMax(data.x)}
 							>
@@ -166,30 +175,19 @@ function App() {
 									}}
 								>
 									{' '}
-									<div
-										style={{
-											background: '#ffffff87',
-											height: 15,
-											width: 2,
-											marginTop: 'calc(50% + 19px)',
-											marginLeft: 19
-										}}
-									></div>
+									<div className="slit"></div>
 								</div>
 							</Draggable>,
 							<Draggable
 								bounds={{
 									left: leftMax + 20,
-									right:
-										(sliderDivOffSets.right - sliderDivOffSets.left - sliderDivOffSets.left + 20) /
-										2
+									right: (sliderDivOffSets.right - sliderDivOffSets.left) / 2
 								}}
 								axis="x"
 								handle=".handle"
 								defaultPosition={{ x: 0, y: 0 }}
 								grid={[1, 1]}
 								scale={1}
-								// onStart={this.handleStart}
 								onDrag={(e, dragData) => handleDrag(e, dragData, 'right')}
 								onStop={(e, data) => setRightMax(data.x)}
 							>
@@ -205,27 +203,20 @@ function App() {
 										border: '3px solid #6a5ca6'
 									}}
 								>
-									<div
-										style={{
-											background: '#ffffff87',
-											height: 15,
-											width: 2,
-											marginTop: 'calc(50% + 19px)',
-											marginLeft: 19
-										}}
-									></div>
+									<div className="slit"></div>
 								</div>
 							</Draggable>
 						]}
 					</div>
 				</div>
+				<div style={{ width: '90%', overflow: 'hidden', marginTop: 14 }}>{getMarkers()}</div>
 				<div style={{ marginTop: 60 }}>
 					<div className="d-ib mr-10 dm">
 						<TimeField value={getStartTime(startTime)} className="dm" />
 					</div>
 					<div
 						className="d-ib mr-10"
-						style={{ color: '#ffffff8c', verticalAlign: 'middle', margin: 'auto 25px' }}
+						style={{ color: '#ffffff8c', verticalAlign: 'middle', margin: 'auto 25px', fontSize: 14 }}
 					>
 						to
 					</div>
@@ -233,9 +224,17 @@ function App() {
 						<TimeField value={getStartTime(endTime)} className="dm" />
 					</div>
 				</div>
-				<div style={{ marginTop: 60 }} className="trim ease disable-selection">
-					Trim
+				<div style={{ marginTop: 60, fontSize: 17 }} className="trim ease disable-selection">
+					<img
+						className="d-ib v-middle"
+						width="25px"
+						height="25px"
+						src={Trim}
+						style={{ opacity: 0.7, marginRight: 5 }}
+					/>
+					<div className="d-ib v-middle">Trim</div>
 				</div>
+				<div class="info-bar">Slide two handles, then hit Trim</div>
 			</header>
 		</div>
 	);

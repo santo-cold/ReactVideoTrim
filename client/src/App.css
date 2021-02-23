@@ -1,5 +1,6 @@
 .App {
 	text-align: center;
+	background-color: #282c34;
 }
 
 .App-logo {
@@ -14,6 +15,7 @@
 }
 
 .App-header {
+	margin: auto;
 	background-color: #282c34;
 	min-height: 100vh;
 	display: flex;
@@ -114,4 +116,62 @@ input:focus {
 	-ms-user-select: none;
 	-o-user-select: none;
 	user-select: none;
+}
+
+.short-marker {
+	display: inline-block;
+	height: 7px;
+	width: 1px;
+	margin: 0px 7px;
+	background: rgba(255, 255, 255, 0.2);
+	vertical-align: top;
+	border-radius: 5px;
+}
+
+.long-marker {
+	border-radius: 5px;
+	display: inline-block;
+	height: 18px;
+	width: 1px;
+	margin: 0px 7px;
+	background: rgba(255, 255, 255, 0.2);
+	vertical-align: top;
+}
+
+.react-draggable-dragging,
+.handle,
+.react-draggable-dragged {
+	cursor: ew-resize;
+}
+
+.v-top {
+	vertical-align: top;
+}
+
+.v-middle {
+	vertical-align: middle;
+}
+
+.slit {
+	background: rgba(255, 255, 255, 0.53);
+	height: 20px;
+	width: 3px;
+	margin-top: calc(50% + 16px);
+	margin-left: 19px;
+	border-radius: 20px;
+}
+
+.info-bar {
+	position: absolute;
+	bottom: 15px;
+	font-size: 14px;
+	font-weight: 100;
+	color: slategray;
+}
+
+.react-draggable-dragging {
+	background: rgb(69, 61, 107) !important;
+}
+.react-draggable-dragging .slit {
+	background: white !important;
 }
